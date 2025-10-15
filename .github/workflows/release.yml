@@ -28,6 +28,12 @@ jobs:
         run: |
           if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
             npx semantic-release
-          else
-            npx semantic-release --dry-run
+          else  # dry run
+            if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+              branch_name=${{ github.head_ref }}
+            else
+              branch_name=${GITHUB_REF_NAME}
+            fi
+            echo "GITHUB_REF=${GITHUB_REF}"
+            npx semantic-release --dry-run --no-ci --branches "${branch_name}"
           fi
