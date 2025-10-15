@@ -1,0 +1,109 @@
+[tool.poetry]
+name = "pytest-sigil"
+version = "0.0.0"
+description = "Proper fixture resource cleanup by handling signals"
+
+packages = [
+    { include = "pytest_sigil", from = "src" },
+]
+authors = [
+    "lovetheguitar <entry.force.0p@icloud.com >",
+]
+maintainers = [
+    "lovetheguitar <entry.force.0p@icloud.com >",
+]
+homepage = "https://github.com/hey-works/pytest-sigil"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^8.0.0"  # TODO: we should very easily support all kinds of older versions - should setup testing for that though
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pdoc = "^14.0.0"
+pytest-mock = "^3.0.0"
+coverage = "^7.0.0"
+
+[tool.poetry.plugins.pytest11]
+sigil = "pytest_sigil._plugin"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.commitizen]
+version = "0.0.0"
+version_files = [
+    "pyproject.toml:^version",  # use regex to only update version at start of line (https://github.com/commitizen-tools/commitizen/issues/496)
+    "src/pytest_sigil/__init__.py:^__version__",
+]
+tag_format = "v$major.$minor.$patch$prerelease"
+major_version_zero = true  # no major versions until stable release
+
+
+[tool.coverage.paths]  # map the installed package to the local package sources
+source = [
+    "src",
+    "*/site-packages",
+]
+
+[tool.coverage.run]  # specify packages to cover, at least import_package_name (e.g. lal_lib)
+source = ["pytest_sigil"]
+dynamic_context = "test_function"
+
+[tool.coverage.report]
+exclude_lines =[
+    "@abc.abstractmethod",
+]
+
+
+[tool.mypy]
+mypy_path = "src"
+
+
+[tool.ruff]
+src = ["src"]
+fix = true
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "A",  # flake8-builtins
+    "B",  # flake8-bugbear
+    "C90",  # mccabe
+    "C401",  # flake8-comprehensions: unnecessary-generator-set
+    "C402",  # flake8-comprehensions: unnecessary-generator-dict
+    "C403",  # flake8-comprehensions: unnecessary-list-comprehension-set
+    "C404",  # flake8-comprehensions: unnecessary-list-comprehension-dict
+    "C405",  # flake8-comprehensions: unnecessary-literal-set
+    "D",  # pydocstyle, limited to PEP257 by `pydocstyle.convention = "pep257"` below
+    # pydocstyle codes not included in the pep257 convention
+    "D212",  # Multi-line docstring summary should start at the first line
+    "D404",  # First word of the docstring should not be "This"
+    "DTZ",  # flake8-datetimez
+    "E",  # pycodestyle (error)
+    "F",  # pyflakes
+    "I",  # isort
+    "LOG",  # flake8-logging
+    "N",  # pep8-naming
+    "PGH",  # pygrep-hooks
+    "RUF022",  # sort dunder `__all__`
+    "RUF100",  # remove unused `noqa`s
+    "RUF101",  # convert deprecated `noqa`s into new ones
+    "UP",  # pyupgrade
+    "W",  # pycodestyle (warning)
+]
+
+pydocstyle.convention = "pep257"
+
+fixable = ["ALL"]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 100
+
+[tool.ruff.format]
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

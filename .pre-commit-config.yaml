@@ -1,0 +1,72 @@
+# Supported hooks: https://pre-commit.com/hooks.html
+default_install_hook_types: ["pre-commit", "commit-msg", "post-checkout", "post-merge"]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [ "--unsafe" ]
+      - id: check-toml
+      - id: check-xml
+      - id: check-json
+      - id: check-added-large-files
+        args: [ "--maxkb=1000" ]
+      - id: detect-private-key
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: mixed-line-ending  # enforce linux line endings
+        args: [--fix=lf]  # ⚠️ requires `git config [--global] core.autocrlf false`
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: f9351c924055bf6c7b4a4670237d3ce141e9f57c  # frozen: v0.14.0
+    hooks:
+      - id: ruff
+      - id: ruff-format
+
+  - repo: https://github.com/asottile/blacken-docs
+    rev: dda8db18cfc68df532abf33b185ecd12d5b7b326 # frozen: 1.20.0
+    hooks:
+      - id: blacken-docs
+        additional_dependencies: [black==25.1.0]  # keep this in sync with the black version currently replicated by ruff
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: 63c8f8312b7559622c0d82815639671ae42132ac # frozen: v2.4.1
+    hooks:
+      - id: codespell
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 9f70dc58c23dfcca1b97af99eaeee3140a807c7e # frozen: v1.18.2
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - pytest
+          - pytest-mock
+
+        args:
+          - --show-error-codes
+          - --strict
+          - --warn-unused-ignores
+          - --warn-redundant-cast
+          - --warn-unreachable
+
+  - repo: https://github.com/python-poetry/poetry  # ⚠ manually paste sha of latest release here, since autoupdate doesn't work here https://python-poetry.org/docs/master/pre-commit-hooks/#why-does-pre-commit-autoupdate-not-update-to-the-latest-version
+    rev: b9e5d79fc57de2f2e60973019d56662b7398440b # frozen: 2.2.1
+    hooks:
+      - id: poetry-check  # validate content of pyproject.toml only
+      - id: poetry-check
+        name: poetry-check --lock
+        args:
+          - --lock  # verify that poetry.lock is consistent with pyproject.toml
+      - id: poetry-install
+        args:
+          - --sync  # ensure that the environment matches lock file
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: cc981fcb065527b6de0033b0cbf0432e69781901  # frozen: v4.9.1
+    hooks:
+      - id: commitizen
+        stages:
+          - commit-msg

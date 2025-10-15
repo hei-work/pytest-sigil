@@ -1,0 +1,14 @@
+include:
+  - project: "hw/ci_templates"
+    ref: "v0.27.1"
+    file:
+      - "workflows/branch_or_merge_pipelines/base.yml"
+      - "templates/lint/pre-commit.yml"
+      - "templates/python/build_test_publish.yml"
+      - "templates/release/base.yml"
+
+stages:
+  - lint
+  - build
+  - test
+  - release
