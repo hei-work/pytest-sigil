@@ -2,6 +2,7 @@
 name = "pytest-sigil"
 version = "0.0.0"
 description = "Proper fixture resource cleanup by handling signals"
+readme = "README.md"
 
 packages = [
     { include = "pytest_sigil", from = "src" },
