@@ -11,6 +11,16 @@ import pytest_sigil
 pytest_plugins = ["pytester"]
 
 
+def test_plugin_is_loaded_in_current_pytest_session(
+    pytestconfig: pytest.Config,
+) -> None:
+    """Ensure that our plugin is loaded in the current pytest session.
+
+    Due to some caching problems this was not the case for some environments in CI.
+    """
+    pytestconfig.pluginmanager.has_plugin(pytest_sigil._PYTEST_PLUGIN_NAME)
+
+
 @pytest.mark.parametrize(
     "plugin_enabled, expected_exit_code",
     [
