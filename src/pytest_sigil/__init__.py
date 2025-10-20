@@ -12,3 +12,6 @@ _DISTRIBUTION_PACKAGE_NAME = "PYTEST_SIGIL"
 
 .. note:: Use this as prefix when defining environment variables for this package.
 """
+
+_PYTEST_PLUGIN_NAME = "sigil"
+"""Name of the pytest plugin provided by this package."""
