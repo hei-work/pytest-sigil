@@ -3,7 +3,9 @@
     "semantic-release": "24.2.9",
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/release-notes-generator": "14.0.3",
-    "@semantic-release/github": "11.0.5"
+    "@semantic-release/github": "11.0.5",
+    "@google/semantic-release-replace-plugin": "^1.2.7",
+    "@semantic-release/git": "^10.0.1"
   },
   "release": {
     "branches": [
@@ -12,6 +14,51 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": ["pyproject.toml"],
+              "from": "version = \".*\"",
+              "to": "version = \"${nextRelease.version}\"",
+              "results": [
+                {
+                  "file": "pyproject.toml",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            },
+            {
+              "files": ["src/pytest_sigil/__init__.py"],
+              "from": "__version__ = \".*\"",
+              "to": "__version__ = \"${nextRelease.version}\"",
+              "results": [
+                {
+                  "file": "src/pytest_sigil/__init__.py",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "pyproject.toml",
+            "src/pytest_sigil/__init__.py"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
       "@semantic-release/github"
     ]
   }
