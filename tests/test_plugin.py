@@ -6,6 +6,8 @@ import time
 
 import pytest
 
+import pytest_sigil
+
 pytest_plugins = ["pytester"]
 
 
@@ -35,7 +37,9 @@ def test_wait_to_be_interrupted():
 """
     )
     command_args = [sys.executable, "-m", "pytest"]
-    command_args += ["-p", "no:sigil"] if not plugin_enabled else []
+    command_args += (
+        ["-p", f"no:{pytest_sigil._PYTEST_PLUGIN_NAME}"] if not plugin_enabled else []
+    )
 
     process = pytester.popen(command_args, text=True)
 
