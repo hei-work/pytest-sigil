@@ -3,6 +3,7 @@
 import signal
 import sys
 import time
+from importlib import metadata
 
 import pytest
 
@@ -19,6 +20,14 @@ def test_plugin_is_loaded_in_current_pytest_session(
     Due to some caching problems this was not the case for some environments in CI.
     """
     pytestconfig.pluginmanager.has_plugin(pytest_sigil._PYTEST_PLUGIN_NAME)
+
+
+def test_plugin_registered_via_entry_point() -> None:
+    """Verify the plugin is registered via entry point metadata."""
+    entry_points = metadata.entry_points(group="pytest11")
+    assert any(ep.name == pytest_sigil._PYTEST_PLUGIN_NAME for ep in entry_points), (
+        f"Plugin '{pytest_sigil._PYTEST_PLUGIN_NAME}' not found in pytest11 entry points"
+    )
 
 
 @pytest.mark.parametrize(
