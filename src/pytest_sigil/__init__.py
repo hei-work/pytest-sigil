@@ -1,6 +1,6 @@
 """pytest_sigil - Proper fixture resource cleanup by handling signals."""
 
-__version__ = "0.0.0"
+__version__ = "1.0.0"
 
 import pathlib
 
