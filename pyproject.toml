@@ -34,16 +34,6 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 
-[tool.commitizen]
-version = "0.0.0"
-version_files = [
-    "pyproject.toml:^version",  # use regex to only update version at start of line (https://github.com/commitizen-tools/commitizen/issues/496)
-    "src/pytest_sigil/__init__.py:^__version__",
-]
-tag_format = "v$major.$minor.$patch$prerelease"
-major_version_zero = true  # no major versions until stable release
-
-
 [tool.coverage.paths]  # map the installed package to the local package sources
 source = [
     "src",
