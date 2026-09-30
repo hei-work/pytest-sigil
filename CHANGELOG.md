@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/hei-work/pytest-sigil/compare/v1.0.0...v1.1.0) (2026-09-30)
+
+
+### Features
+
+* support & test pytest 9, drop upper version bound of `pytest` dependency ([eed7bb0](https://github.com/hei-work/pytest-sigil/commit/eed7bb01e741c798888029b7f7b655e6be08decf))
+
 # 1.0.0 (2025-10-20)
 
 
